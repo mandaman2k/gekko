@@ -7,7 +7,7 @@ const exchangeUtils = require('../exchangeUtils');
 const retry = exchangeUtils.retry;
 const scientificToDecimal = exchangeUtils.scientificToDecimal;
 
-const BitsoClient = require('bitso-client');
+const BitsoClient = require('bitso-api');
 
 const Trader = function (config) {
     _.bindAll(this, [
