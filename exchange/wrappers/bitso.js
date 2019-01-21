@@ -119,7 +119,7 @@ Trader.prototype.handleResponse = function (funcName, callback) {
                 error = new Error(error);
             }
             
-            if(error.error.message == undefined){
+            if(error.error == undefined){
                 errorA = error.message;
             } else {
                 errorA = error.error.message;
