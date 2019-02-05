@@ -182,13 +182,17 @@ Trader.prototype.getTrades = function (since, callback, descending) {
     };
 
     if (since) {
-        var endTs = moment(since)
+        /* var endTs = moment(since)
             .add(1, 'h')
             .valueOf();
         var nowTs = moment().valueOf();
 
         reqData.startTime = moment(since).valueOf();
-        reqData.endTime = endTs > nowTs ? nowTs : endTs;
+        reqData.endTime = endTs > nowTs ? nowTs : endTs; */
+        var reqData = {
+            book: this.pair,
+            limit: 100
+        };
     }
 
     //const fetch = cb => this.binance.aggTrades(reqData, this.handleResponse('getTrades', cb));
