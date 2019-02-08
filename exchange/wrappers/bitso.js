@@ -126,7 +126,8 @@ Trader.prototype.handleResponse = function (funcName, callback) {
             }
             
             if (includes(errorA, recoverableErrors)) {
-                error.error.notFatal = true;
+                errorA.notFatal = true;
+                return callback(errorA);
             }
 
             if (funcName === 'cancelOrder' && error.message.includes('UNKNOWN_ORDER')) {
