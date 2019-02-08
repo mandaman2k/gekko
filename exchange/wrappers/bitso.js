@@ -190,7 +190,7 @@ Trader.prototype.getTrades = function (since, callback, descending) {
 
         reqData.startTime = moment(since).valueOf();
         reqData.endTime = endTs > nowTs ? nowTs : endTs; */
-        var reqData = {
+        reqData = {
             book: this.pair,
             limit: 100
         };
