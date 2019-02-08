@@ -109,8 +109,8 @@ Stitcher.prototype.prepareHistoricalData = function(done) {
     log.debug('\tFetching exchange data since', this.ago(idealExchangeStartTimeTS))
     this.checkExchangeTrades(idealExchangeStartTime, function(err, exchangeData) {
       log.debug('\tAvailable exchange data:');
-      log.debug('\t\tlocal from:', this.ago(local.from));
-      log.debug('\t\tlocal to:', this.ago(local.to));
+      log.debug('\t\tlocal from:', this.ago(localData.from));
+      log.debug('\t\tlocal to:', this.ago(localData.to));
       log.debug('\t\tfrom:', this.ago(exchangeData.from));
       log.debug('\t\tto:', this.ago(exchangeData.to));
 
