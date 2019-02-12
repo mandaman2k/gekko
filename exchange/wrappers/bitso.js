@@ -118,13 +118,13 @@ Trader.prototype.handleResponse = function (funcName, callback) {
             if (_.isString(error)) {
                 error = new Error(error);
             }
-            
-            if(error.error == undefined){
+
+            if (error.error == undefined) {
                 errorA = error.message;
             } else {
                 errorA = error.error.message;
             }
-            
+
             if (includes(errorA, recoverableErrors)) {
                 errorA.notFatal = true;
                 return callback(errorA);
@@ -156,9 +156,10 @@ Trader.prototype.handleResponse = function (funcName, callback) {
     };
 };
 
-Trader.prototype.getTrades = function (since, callback, descending) {
+Trader.prototype.getTrades = function (since, callback, marker, descending) {
     const processResults = (err, data) => {
         if (err) return callback(err);
+        if (data.payload == undefined) return callback(data);
 
         var parsedTrades = [];
         _.each(
@@ -173,7 +174,7 @@ Trader.prototype.getTrades = function (since, callback, descending) {
             },
             this
         );
-
+        descending = true;
         if (descending) callback(null, parsedTrades.reverse());
         else callback(undefined, parsedTrades);
     };
@@ -183,17 +184,18 @@ Trader.prototype.getTrades = function (since, callback, descending) {
     };
 
     if (since) {
-        /* var endTs = moment(since)
-            .add(1, 'h')
-            .valueOf();
-        var nowTs = moment().valueOf();
-
-        reqData.startTime = moment(since).valueOf();
-        reqData.endTime = endTs > nowTs ? nowTs : endTs; */
-        reqData = {
-            book: this.pair,
-            limit: 100
-        };
+        if (marker) {
+            reqData = {
+                book: this.pair,
+                limit: 100,
+                marker: marker
+            };
+        } else {
+            reqData = {
+                book: this.pair,
+                limit: 100
+            };
+        }
     }
 
     //const fetch = cb => this.binance.aggTrades(reqData, this.handleResponse('getTrades', cb));
@@ -362,7 +364,7 @@ Trader.prototype.addOrder = function (type, amount, price, callback) {
 
     console.log(reqData);
 
-    const handler = cb => setTimeout(() => this.requestPublic('orders', reqData, 'POST', this.handleResponse('addOrder', cb)),1000);
+    const handler = cb => setTimeout(() => this.requestPublic('orders', reqData, 'POST', this.handleResponse('addOrder', cb)), 1000);
     retry(undefined, handler, setOrder);
 };
 
@@ -521,6 +523,8 @@ Trader.getCapabilities = function () {
         assets: marketData.assets,
         markets: marketData.markets,
         requires: ['key', 'secret'],
+        providesHistory: 'date',
+        providesFullHistory: false,
         tid: 'tid',
         tradable: true,
         gekkoBroker: 0.6,
