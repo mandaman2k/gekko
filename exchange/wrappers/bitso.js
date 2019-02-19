@@ -357,7 +357,7 @@ Trader.prototype.addOrder = function (type, amount, price, callback) {
     const reqData = {
         book: this.pair,
         side: type,
-        type: 'limit',
+        type: 'market',
         major: amount,
         price: price,
     };
